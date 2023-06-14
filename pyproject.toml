@@ -5,7 +5,10 @@ description = "Add a short description here"
 authors = [
     { name = "sou1118", email = "hello@kattyan.dev" }
 ]
-dependencies = []
+dependencies = [
+    "beautifulsoup4~=4.12.2",
+    "requests~=2.31.0",
+]
 readme = "README.md"
 requires-python = ">= 3.10"
 
