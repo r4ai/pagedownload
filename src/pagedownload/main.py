@@ -29,19 +29,18 @@ def get_all_images(url):
 def main(url):
     # ページのHTMLを取得し、解析します。
     soup = BeautifulSoup(requests.get(url).content, "html.parser")
-    
-    for link in soup.find_all("a"):
-        href = link.get('href')
-        
-        # 絶対URLに変換
-        href = urljoin(base_url, href)
-        
+    links = soup.find_all("a")
+    href_list: list[str] = list(map(
+        lambda x: urljoin(base_url, x.get('href')), links))
+    href_list.append(url) # `menu.html`もダウンロード対象に含める
+
+    for href in href_list:
         # 画像を取得してダウンロード
         try:
             images = get_all_images(href)
             for image in images:
                 download(image, os.path.join('page', os.path.basename(image)))
-            
+
             # hrefページをダウンロード
             download(href, os.path.join('page', os.path.basename(href)))
         except requests.exceptions.RequestException as e:
